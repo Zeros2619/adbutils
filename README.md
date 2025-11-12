@@ -113,6 +113,9 @@ Same as:
 * `adb forward <local> <remote>`
 * `adb forward --remove <local>`
 * `adb forward --remove-all`
+* `adb reverse <remote> <local>`
+* `adb reverse --remove <remote>`
+* `adb reverse --remove-all`
 * `adb forward --list` 
 * `adb reverse --list`
 
@@ -130,6 +133,15 @@ d.forward_remove("tcp:9999")  # use local address
 # remove all forwarded connections tied to specific device
 d.forward_remove_all()
 
+# reverse (forward) a remote address to a local address
+d.reverse("localabstract:scrcpy", "tcp:9999")
+
+# remove reversed connection
+d.reverse_remove("localabstract:scrcpy")
+
+# remove all reversed connection tied to specific device
+d.reverse_remove_all()
+
 # list all forwards
 for item in adb.forward_list():
     print(item.serial, item.local, item.remote)
@@ -142,9 +154,11 @@ for item in adb.forward_list("8d1f93be"):
     # 8d1f93be tcp:10603 tcp:7912
     # 12345678 tcp:10664 tcp:7912
 
-
+# list all reversed forwards
 for item in adb.reverse_list():
     print(item.serial, item.local, item.remote)
+    # 8d1f93be tcp:9999 localabstract:scrcpy
+    # 12345678 tcp:9999 localabstract:scrcpy
 
 # 监控设备连接 track-devices
 for event in adb.track_devices():
